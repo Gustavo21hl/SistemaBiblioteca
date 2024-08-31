@@ -171,8 +171,70 @@ public class CrudBiblioteca {
 	//method to update the book
 
 	public static void update() {
+		
+		try {
+			Connection conexao = ConnectionFactory.createConnection();
+			
+			Biblioteca biblioteca = new Biblioteca();
+			
+			biblioteca.setTitulo (JOptionPane.showInputDialog("Insira o título do livro: "));
+			biblioteca.setAutor(JOptionPane.showInputDialog("Insira o autor do livro: "));
+			biblioteca.setAno_publicacao(Integer.parseInt(JOptionPane.showInputDialog("Insira o ano de publicação do livro: ")));
+			biblioteca.setIsbn(JOptionPane.showInputDialog("Insira o ISBN do livro: "));
+			biblioteca.setEditora(JOptionPane.showInputDialog("Insira a editora do livro: "));
 
-		System.out.println("UPDATE");
+			String[] generos = {
+				"Aventura",
+				"Autoajuda",
+				"Biografia",
+				"Culinária",
+				"Didático",
+				"Drama",
+				"Fantasia",
+				"Ficção Científica",
+				"História",
+				"Infantil",
+				"Literatura Clássica",
+				"Mistério",
+				"Não-Ficção",
+				"Outros",
+				"Poesia",
+				"Romance",
+				"Suspense",
+				"Terror"
+			};
+			
+			String generoSelecionado = (String) JOptionPane.showInputDialog(null,
+					"Selecioneo o gênero do livro: ",
+					"Escolha de Gênero: ",
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					generos,
+					generos[0]
+					);
+			
+			biblioteca.setGenero(generoSelecionado);
+			
+			String sql = "UPDATE livros SET titulo=? ,autor=? ,ano_publicacao=? ,editora=?,"
+					+ ",genero=? WHERE isbn=?";
+			
+			//criando um comando para passar o sql
+			PreparedStatement cmd = conexao.prepareStatement(sql);
+			cmd.setString(1, biblioteca.getTitulo());
+			cmd.setString(2, biblioteca.getAutor());
+			cmd.setInt(3, biblioteca.getAno_publicacao());
+			cmd.setString(4, biblioteca.getIsbn());
+			cmd.setString(5, biblioteca.getEditora());
+			cmd.setString(6, biblioteca.getGenero());
+			
+			cmd.execute();
+			JOptionPane.showMessageDialog(null, "Livro inserido com sucesso!");
+			cmd.close();
+			
+		} catch (Exception e) {
+			
+		}
+		
 
 		}
 
