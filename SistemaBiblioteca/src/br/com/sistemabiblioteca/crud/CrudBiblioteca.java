@@ -232,7 +232,7 @@ public class CrudBiblioteca {
 			cmd.close();
 			
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 
@@ -242,7 +242,25 @@ public class CrudBiblioteca {
 
 	public static void delete() {
 
-		System.out.println("DELETE");
+	try {
+		Connection conexao = ConnectionFactory.createConnection();
+		Biblioteca biblioteca = new Biblioteca();
+		
+		biblioteca.setIsbn(JOptionPane.showInputDialog("Entre com ISBN so livro: "));
+		
+		String sql = "delete from livros where isbn = ?";
+		
+		PreparedStatement cmd = conexao.prepareStatement(sql);
+		cmd.setString(1, biblioteca.getIsbn());
+		cmd.execute();
+		
+		JOptionPane.showMessageDialog(null, "Registro deletado com sucesso!");
+		
+		cmd.close();
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}	
 
 	}
 
